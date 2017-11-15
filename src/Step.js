@@ -8,6 +8,7 @@ class Step extends PureComponent {
       this.props.onClick(this.props.number);
     }
   };
+
   render() {
     return (
       <div

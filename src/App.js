@@ -15,19 +15,24 @@ class App extends Component {
     cardNumber: "",
     isTimeOver: false
   };
+
   handleClickNextForm = () => {
     const { ...state } = this.state;
     this.setState({ step: state.step + 1 });
   };
+
   handleChangeForm = (stateKey, stateValue) => {
     this.setState({ [stateKey]: stateValue }); //?
   };
+
   handleTabClick = step => {
     this.setState({ step: step });
   };
+
   handleChangeTimeOver = isTimeOver => {
     this.setState({ isTimeOver });
   };
+
   isFormCommitable = () => {
     const { ...state } = this.state;
     switch (state.step) {
@@ -45,121 +50,13 @@ class App extends Component {
         return false;
     }
   };
-  renderTabPanel = () => {
-    // const { ...state } = this.state;
-    let tabPanel;
-    switch (this.state.step) {
-      case 1:
-        tabPanel = (
-          <div className="tab-panel">
-            <Step
-              key={stepTitles[0]}
-              onClick={this.handleTabClick}
-              isSelected={true}
-              number={1}
-              isClickable={false}
-            >
-              {stepTitles[0]}
-            </Step>
-            <Step
-              key={stepTitles[1]}
-              onClick={this.handleTabClick}
-              isSelected={false}
-              number={2}
-              isClickable={false}
-            >
-              {stepTitles[1]}
-            </Step>
-            <Step
-              key={stepTitles[2]}
-              onClick={this.handleTabClick}
-              isSelected={false}
-              number={3}
-              isClickable={false}
-            >
-              {stepTitles[2]}
-            </Step>
-          </div>
-        );
-        break;
-      case 2:
-        tabPanel = (
-          <div className="tab-panel">
-            <Step
-              key={stepTitles[0]}
-              onClick={this.handleTabClick}
-              isSelected={false}
-              number={1}
-              isClickable={true}
-            >
-              {stepTitles[0]}
-            </Step>
-            <Step
-              key={stepTitles[1]}
-              onClick={this.handleTabClick}
-              isSelected={true}
-              number={2}
-              isClickable={false}
-            >
-              {stepTitles[1]}
-            </Step>
-            <Step
-              key={stepTitles[2]}
-              onClick={this.handleTabClick}
-              isSelected={false}
-              number={3}
-              isClickable={false}
-            >
-              {stepTitles[2]}
-            </Step>
-          </div>
-        );
-        break;
-      case 3:
-        tabPanel = (
-          <div className="tab-panel">
-            <Step
-              key={stepTitles[0]}
-              onClick={this.handleTabClick}
-              isSelected={false}
-              number={1}
-              isClickable={true}
-            >
-              {stepTitles[0]}
-            </Step>
-            <Step
-              key={stepTitles[1]}
-              onClick={this.handleTabClick}
-              isSelected={false}
-              number={2}
-              isClickable={true}
-            >
-              {stepTitles[1]}
-            </Step>
-            <Step
-              key={stepTitles[2]}
-              onClick={this.handleTabClick}
-              isSelected={true}
-              number={3}
-              isClickable={false}
-            >
-              {stepTitles[2]}
-            </Step>
-          </div>
-        );
-        break;
-      default:
-        tabPanel = "";
-    }
-    return tabPanel;
-  };
 
   renderForm() {
     const { ...state } = this.state;
     let form;
     switch (state.step) {
       case 1:
-        form = (
+        return (
           <PersonalForm
             firstName={state.firstName}
             lastName={state.lastName}
@@ -167,21 +64,18 @@ class App extends Component {
             onChangeForm={this.handleChangeForm}
           />
         );
-        break;
       case 2:
-        form = (
+        return (
           <CardForm
             cardNumber={state.cardNumber}
             onChangeForm={this.handleChangeForm}
             onChangeTimeOver={this.handleChangeTimeOver}
           />
         );
-        break;
       case 3:
-        form = "Поздравляем!";
-        break;
+        return "Поздравляем!";
       default:
-        form = "";
+        return "";
     }
     return form;
   }
@@ -192,7 +86,19 @@ class App extends Component {
 
     return (
       <div className="container">
-        {this.renderTabPanel()}
+        <div className="tab-panel">
+          {stepTitles.map((item, index) => (
+            <Step
+              key={item}
+              onClick={this.handleChangeForm}
+              isSelected={state.step === index + 1}
+              number={index + 1}
+              isClickable={false}
+            >
+              {item}
+            </Step>
+          ))}
+        </div>
         <div className="form-content">{this.renderForm()}</div>
         <div className="button-panel">
           <button
